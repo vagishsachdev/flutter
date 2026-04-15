@@ -16,6 +16,12 @@ class _CurrencyConverterMaterialPageState
   //   super.initState();
   // }
 
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
   double result = 0;
   final TextEditingController textEditingController = TextEditingController();
 
