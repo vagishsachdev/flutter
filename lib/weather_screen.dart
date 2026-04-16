@@ -26,15 +26,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
       ),
     );
     final data = jsonDecode(res.body);
-    setState(() {
-      temp = data['list'][0]['main']['temp'];
-    });
+
+    // setState(() {
+    //   temp = data['list'][0]['main']['temp'];
+    // });
+    temp = data['list'][0]['main']['temp'];
   }
 
   @override
   void initState() {
     super.initState();
-    getCurrentWeather();
+    // getCurrentWeather();
   }
 
   @override
@@ -58,83 +60,103 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsetsGeometry.all(12),
-        child: Column(
-          spacing: 12,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // main weather card
-            MainWeatherCard(
-              temp: '$temp k',
-              icon: Icon(Icons.cloud, size: 70),
-              weather: 'Rain',
-            ),
-            // Weather Forecast,
-            Text('Weather Forecast', style: titleTextStyle),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                spacing: 2,
-                children: [
-                  WeatherForecastCard(
-                    time: '09:00',
-                    icon: Icon(Icons.cloud, size: 35),
-                    temp: '301.12',
-                  ),
-                  WeatherForecastCard(
-                    time: '10:00',
-                    icon: Icon(Icons.wind_power, size: 35),
-                    temp: '301.12',
-                  ),
-                  WeatherForecastCard(
-                    time: '11:00',
-                    icon: Icon(Icons.sunny, size: 35),
-                    temp: '444.12',
-                  ),
-                  WeatherForecastCard(
-                    time: '12:00',
-                    icon: Icon(Icons.cloud, size: 35),
-                    temp: '301.12',
-                  ),
-                  WeatherForecastCard(
-                    time: '01:00',
-                    icon: Icon(Icons.grass, size: 35),
-                    temp: '301.12',
-                  ),
-                  WeatherForecastCard(
-                    time: '02:00',
-                    icon: Icon(Icons.night_shelter, size: 35),
-                    temp: '301.12',
-                  ),
-                ],
-              ),
-            ),
-            // Additional Information
-            Text('Additional Information', style: titleTextStyle),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: FutureBuilder(
+        future: getCurrentWeather(),
+        builder: (context, snapshot) {
+          // LOADING
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+
+          // ERROR
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+
+          // DATA - can be null
+          return Padding(
+            padding: EdgeInsetsGeometry.all(12),
+            child: Column(
+              spacing: 12,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AdditionalInformationComponent(
-                  icon: Icon(Icons.water_drop, size: 35),
-                  info: Text('Humidity', style: TextStyle(fontSize: 15)),
-                  value: Text('94', style: TextStyle(fontSize: 15)),
+                // main weather card
+                MainWeatherCard(
+                  temp: '$temp k',
+                  icon: Icon(Icons.cloud, size: 70),
+                  weather: 'Rain',
                 ),
-                AdditionalInformationComponent(
-                  icon: Icon(Icons.air, size: 35),
-                  info: Text('Humidity', style: TextStyle(fontSize: 15)),
-                  value: Text('94', style: TextStyle(fontSize: 15)),
+                // Weather Forecast,
+                Text('Weather Forecast', style: titleTextStyle),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    spacing: 2,
+                    children: [
+                      WeatherForecastCard(
+                        time: '09:00',
+                        icon: Icon(Icons.cloud, size: 35),
+                        temp: '301.12',
+                      ),
+                      WeatherForecastCard(
+                        time: '10:00',
+                        icon: Icon(Icons.wind_power, size: 35),
+                        temp: '301.12',
+                      ),
+                      WeatherForecastCard(
+                        time: '11:00',
+                        icon: Icon(Icons.sunny, size: 35),
+                        temp: '444.12',
+                      ),
+                      WeatherForecastCard(
+                        time: '12:00',
+                        icon: Icon(Icons.cloud, size: 35),
+                        temp: '301.12',
+                      ),
+                      WeatherForecastCard(
+                        time: '01:00',
+                        icon: Icon(Icons.grass, size: 35),
+                        temp: '301.12',
+                      ),
+                      WeatherForecastCard(
+                        time: '02:00',
+                        icon: Icon(Icons.night_shelter, size: 35),
+                        temp: '301.12',
+                      ),
+                    ],
+                  ),
                 ),
-                AdditionalInformationComponent(
-                  icon: Icon(Icons.beach_access, size: 35),
-                  info: Text('Humidity', style: TextStyle(fontSize: 15)),
-                  value: Text('94', style: TextStyle(fontSize: 15)),
+                // Additional Information
+                Text('Additional Information', style: titleTextStyle),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    AdditionalInformationComponent(
+                      icon: Icon(Icons.water_drop, size: 35),
+                      info: Text('Humidity', style: TextStyle(fontSize: 15)),
+                      value: Text('94', style: TextStyle(fontSize: 15)),
+                    ),
+                    AdditionalInformationComponent(
+                      icon: Icon(Icons.air, size: 35),
+                      info: Text('Humidity', style: TextStyle(fontSize: 15)),
+                      value: Text('94', style: TextStyle(fontSize: 15)),
+                    ),
+                    AdditionalInformationComponent(
+                      icon: Icon(Icons.beach_access, size: 35),
+                      info: Text('Humidity', style: TextStyle(fontSize: 15)),
+                      value: Text('94', style: TextStyle(fontSize: 15)),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
