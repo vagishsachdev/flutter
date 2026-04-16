@@ -1,16 +1,42 @@
+import 'dart:convert';
+
 import 'package:currency_converter/additional_information_component.dart';
 import 'package:currency_converter/main_weather_card.dart';
 import 'package:currency_converter/weather_forecast_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
-
+  // parse uri here
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  double temp = 0;
+
+  Future getCurrentWeather() async {
+    String cityName = 'London';
+    final apiKey = dotenv.env['API_KEY'];
+    final res = await http.get(
+      Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$apiKey',
+      ),
+    );
+    final data = jsonDecode(res.body);
+    setState(() {
+      temp = data['list'][0]['main']['temp'];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentWeather();
+  }
+
   @override
   Widget build(BuildContext context) {
     final titleTextStyle = TextStyle(fontWeight: FontWeight.w500, fontSize: 22);
@@ -41,7 +67,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           children: [
             // main weather card
             MainWeatherCard(
-              temp: '300 k',
+              temp: '$temp k',
               icon: Icon(Icons.cloud, size: 70),
               weather: 'Rain',
             ),
