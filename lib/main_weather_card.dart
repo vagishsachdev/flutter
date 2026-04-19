@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class MainWeatherCard extends StatelessWidget {
   final String temp;
-  final Icon icon;
+  final Widget icon;
   final String weather;
   
   const MainWeatherCard({
@@ -25,6 +25,7 @@ class MainWeatherCard extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
             child: Padding(
+              // top and bottom padding
               padding: const EdgeInsets.all(12),
               child: Column(
                 children: [

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class WeatherForecastCard extends StatelessWidget {
   final String time;
-  final Icon icon;
+  final Widget icon;
   final String temp;
   const WeatherForecastCard({
     super.key,
