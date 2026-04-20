@@ -51,19 +51,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
       final hour12 = hour % 12 == 0 ? 12 : hour % 12; // convert 0 → 12, 13 → 1
       return '$hour12:$minute $period'; // "9:00 AM"
     }
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        spacing: 2,
-        children: [
-          for (var item in data['list'].skip(1).take(8))
-             WeatherForecastCard(
-              time: formatTime(item['dt']),
-              icon: WeatherIconMapper(iconCode: item['weather'][0]['icon'], size: 35),
-              temp: '${(item['main']['temp'].toDouble()-273.15).toStringAsFixed(2)}°C',
+    List item = data['list'].sublist(1, 9); // 8 cards
+    
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        itemCount: item.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: EdgeInsetsGeometry.only(right: 4),
+            child: WeatherForecastCard(
+              time: formatTime(item[index]['dt']).toString(),
+              icon: WeatherIconMapper(iconCode: item[index]['weather'][0]['icon'], size: 35),
+              temp: '${(item[index]['main']['temp'].toDouble()-273.15).toStringAsFixed(2)}°C',
             ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -75,17 +79,26 @@ class _WeatherScreenState extends State<WeatherScreen> {
         AdditionalInformationComponent(
           icon: Icon(Icons.opacity, size: 35),
           info: Text('Humidity', style: TextStyle(fontSize: 15)),
-          value: Text('${data['list'][0]['main']['humidity']}%', style: TextStyle(fontSize: 15)),
+          value: Text(
+            '${data['list'][0]['main']['humidity']}%',
+            style: TextStyle(fontSize: 15),
+          ),
         ),
         AdditionalInformationComponent(
           icon: Icon(Icons.air, size: 35),
           info: Text('Wind Speed', style: TextStyle(fontSize: 15)),
-          value: Text('${data['list'][0]['wind']['speed'].toStringAsFixed(2)} m/s', style: TextStyle(fontSize: 15)),
+          value: Text(
+            '${data['list'][0]['wind']['speed'].toStringAsFixed(2)} m/s',
+            style: TextStyle(fontSize: 15),
+          ),
         ),
         AdditionalInformationComponent(
           icon: Icon(Icons.beach_access, size: 35),
           info: Text('Pressure', style: TextStyle(fontSize: 15)),
-          value: Text('${data['list'][0]['main']['pressure']} hPa', style: TextStyle(fontSize: 15)),
+          value: Text(
+            '${data['list'][0]['main']['pressure']} hPa',
+            style: TextStyle(fontSize: 15),
+          ),
         ),
       ],
     );
