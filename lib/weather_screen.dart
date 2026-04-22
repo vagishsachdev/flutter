@@ -15,6 +15,7 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  late Future weather;
   Future getCurrentWeather() async {
     String cityName = 'Delhi';
     final apiKey = dotenv.env['API_KEY'];
@@ -25,6 +26,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
     final data = jsonDecode(res.body);
     return data;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    weather = getCurrentWeather();
   }
 
   Widget _buildMainCard(Map data) {
@@ -39,23 +46,25 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   Widget _buildScrollableForecast(Map data) {
+    // Timestamp to 12hr time format
     String formatTime(dynamic timestamp) {
       final date = DateTime.fromMillisecondsSinceEpoch(
         timestamp *
-            1000, // ← multiply by 1000 (timestamp is in seconds, Dart needs milliseconds)
+            1000, 
       );
-      // format to 12 hour with AM/PM
       final hour = date.hour;
-      final minute = date.minute.toString().padLeft(2, '0'); // "5" → "05"
+      final minute = date.minute.toString().padLeft(2, '0'); 
       final period = hour >= 12 ? 'PM' : 'AM';
-      final hour12 = hour % 12 == 0 ? 12 : hour % 12; // convert 0 → 12, 13 → 1
-      return '$hour12:$minute $period'; // "9:00 AM"
+      final hour12 = hour % 12 == 0 ? 12 : hour % 12; 
+      return '$hour12:$minute $period';
     }
     List item = data['list'].sublist(1, 9); // 8 cards
     
     return SizedBox(
+      // ListView.builder should always have an initial width
       height: 120,
       child: ListView.builder(
+        // ListView.builder should always have initial list size
         itemCount: item.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
@@ -120,13 +129,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
         title: const Text('Weather App'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                weather = getCurrentWeather();
+              });
+            },
             icon: const Icon(Icons.replay),
           ),
         ],
       ),
       body: FutureBuilder(
-        future: getCurrentWeather(),
+        future: weather,
         builder: (context, snapshot) {
           // LOADING
           if (snapshot.connectionState == ConnectionState.waiting) {
