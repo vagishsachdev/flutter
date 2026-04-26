@@ -26,17 +26,12 @@ class Header extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: FractionallySizedBox(
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search',
-                  enabledBorder: border,
-                  focusedBorder: border,
-                ),
-              ),
+          child: TextField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Search',
+              enabledBorder: border,
+              focusedBorder: border,
             ),
           ),
         ),
