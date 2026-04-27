@@ -18,11 +18,7 @@ class Header extends StatelessWidget {
           padding: EdgeInsetsGeometry.all(20),
           child: Text(
             'Shoes\nCollection',
-            style: TextStyle(
-              fontFamily: 'Lato',
-              fontWeight: FontWeight.bold,
-              fontSize: 35,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         Expanded(

@@ -1,15 +1,18 @@
+import 'package:currency_converter/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final String productName;
   final String productPrice;
   final String productImage;
+  final Color backgroundColor;
 
   const ProductCard({
     super.key,
     required this.productName,
     required this.productPrice,
     required this.productImage,
+    required this.backgroundColor,
   });
 
   @override
@@ -17,7 +20,7 @@ class ProductCard extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        color: Color.fromRGBO(208, 237, 251, 1),
+        color: backgroundColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),

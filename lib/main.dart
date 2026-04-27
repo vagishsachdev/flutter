@@ -26,14 +26,26 @@ class MyApp extends StatelessWidget {
           prefixIconColor: Colors.grey,
         ),
         // global text styles
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato'
+          ),
+        ),
         textTheme: TextTheme(
           titleMedium: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
+          titleLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 35,
+          ),
           bodySmall: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16
+            fontSize: 16,
           ),
         ),
       ),
