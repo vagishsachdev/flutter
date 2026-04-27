@@ -1,14 +1,15 @@
 import 'package:currency_converter/filter_list.dart';
 import 'package:currency_converter/header.dart';
+import 'package:currency_converter/product_list.dart';
 import 'package:flutter/material.dart';
 
 class ShopAppScreen extends StatelessWidget {
   const ShopAppScreen({super.key});
   final List<String> brandList = const [
-    'Brand A',
-    'Brand B',
-    'Brand C',
-    'Brand D',
+    'All',
+    'Nike',
+    'Adidas',
+    'Bata',
   ];
 
   @override
@@ -19,14 +20,20 @@ class ShopAppScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Header(),
-            Padding(
-              padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  FilterList(list: brandList),
-                  
-                ],
+            Expanded(
+              child: Padding(
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FilterList(list: brandList),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ProductList(),
+                  ],
+                ),
               ),
             ),
           ],
